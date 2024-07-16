@@ -420,31 +420,34 @@ ble_spp_client_gap_event(struct ble_gap_event *event, void *arg)
         return 0;
 
     case BLE_GAP_EVENT_NOTIFY_RX:
-    /* Peer sent us a notification or indication. */
     MODLOG_DFLT(INFO, "Received data from server\n");
     
-    // Convert om_data to a null-terminated string
+    // Convert hex data to ASCII
     char *received_data = calloc(event->notify_rx.om->om_len + 1, sizeof(char));
-    memcpy(received_data, event->notify_rx.om->om_data, event->notify_rx.om->om_len);
-    received_data[event->notify_rx.om->om_len] = '\0';
+    for (int i = 0; i < event->notify_rx.om->om_len; i += 2) {
+        char hex[3] = {0};
+        memcpy(hex, &event->notify_rx.om->om_data[i], 2);
+        received_data[i/2] = (char)strtol(hex, NULL, 16);
+    }
     
-    MODLOG_DFLT(INFO, "Data: %s\n", received_data);
+    MODLOG_DFLT(INFO, "Data (hex): %.*s", event->notify_rx.om->om_len, event->notify_rx.om->om_data);
+    MODLOG_DFLT(INFO, "Data (ASCII): %s", received_data);
     
     // Parse and display the data
     if (strncmp(received_data, "T:", 2) == 0) {
         float temp, hum;
         sscanf(received_data, "T:%f,H:%f", &temp, &hum);
         MODLOG_DFLT(INFO, "Temperature: %.1f, Humidity: %.1f\n", temp, hum);
-        save_sensor_data(temp,hum);
+        save_sensor_data(temp, hum);
     } else if (strncmp(received_data, "X:", 2) == 0) {
         int x, y, z;
         sscanf(received_data, "X:%d,Y:%d,Z:%d", &x, &y, &z);
         MODLOG_DFLT(INFO, "Accelerometer - X: %d, Y: %d, Z: %d\n", x, y, z);
-        save_accel_data(x,y,z);
+        save_accel_data(x, y, z);
     }
     
-    // Write to UART
-    uart_write_bytes(UART_NUM_0, received_data, strlen(received_data));
+    // Write hex data to UART
+    uart_write_bytes(UART_NUM_0, event->notify_rx.om->om_data, event->notify_rx.om->om_len);
     uart_write_bytes(UART_NUM_0, "\n", 1);
     
     free(received_data);
@@ -513,34 +516,6 @@ void send_test_data(void)
     send_data_to_server(test_data, sizeof(test_data) - 1);  // -1 to exclude null terminator
 }
 
-// Call this function periodically in your main loop or in a timer callback
-/*void ble_client_uart_task(void *pvParameters)
-{
-    ESP_LOGI(tag, "BLE client UART task started");
-    uart_event_t event;
-    uint8_t* data = (uint8_t*) malloc(BLE_GATT_MTU_SIZE);
-    size_t length;
-
-    for (;;) {
-        if (xQueueReceive(spp_common_uart_queue, (void * )&event, (TickType_t)portMAX_DELAY)) {
-            switch (event.type) {
-            case UART_DATA:
-                length = uart_read_bytes(UART_NUM_0, data, event.size, portMAX_DELAY);
-                if (length > 0) {
-                    ESP_LOGI(tag, "Sending data to server: %.*s", length, data);
-                    send_data_to_server(data, length);
-                }
-                break;
-            default:
-                break;
-            }
-        }
-    }
-    free(data);
-    vTaskDelete(NULL);
-}
-*/
-
 void ble_client_uart_task(void *pvParameters)
 {
     ESP_LOGI(tag, "BLE client UART task started");
@@ -554,12 +529,12 @@ void ble_client_uart_task(void *pvParameters)
                 if (event.size) {
                     uart_read_bytes(UART_NUM_0, command, event.size, portMAX_DELAY);
                     
-                    // Check if the command is valid (1 or 2)
-                    if (command[0] == '1' || command[0] == '2') {
-                        ESP_LOGI(tag, "Sending command: %c", command[0]);
-                        send_data_to_server(command, 1);
+                    // Check if the command is valid (31 or 32 in hex)
+                    if (command[0] == '3' && (command[1] == '1' || command[1] == '2')) {
+                        ESP_LOGI(tag, "Sending command: %c%c", command[0], command[1]);
+                        send_data_to_server(command, 2);
                     } else {
-                        ESP_LOGI(tag, "Invalid command. Please enter 1 or 2.");
+                        ESP_LOGI(tag, "Invalid command. Please enter 31 or 32 in hex.");
                     }
                 }
                 break;

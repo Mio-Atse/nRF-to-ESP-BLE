@@ -164,36 +164,6 @@ static void nrf_qwr_error_handler(uint32_t nrf_error)
 
 
 
-/*
-static void nus_data_handler(ble_nus_evt_t * p_evt)
-{
-    if (p_evt->type == BLE_NUS_EVT_RX_DATA)
-    {
-        NRF_LOG_INFO("Received data from BLE NUS");
-        NRF_LOG_HEXDUMP_INFO(p_evt->params.rx_data.p_data, p_evt->params.rx_data.length);
-
-        // Process the received data here
-        // For example, print it to UART
-        for (uint32_t i = 0; i < p_evt->params.rx_data.length; i++)
-        {
-            app_uart_put(p_evt->params.rx_data.p_data[i]);
-        }
-        app_uart_put('\n');
-
-        // Echo the data back to the client
-        uint32_t err_code = ble_nus_data_send(&m_nus, p_evt->params.rx_data.p_data, 
-                                              &p_evt->params.rx_data.length,
-                                              m_conn_handle);
-        if (err_code != NRF_SUCCESS)
-        {
-            NRF_LOG_ERROR("Failed to send data back. Error: %d", err_code);
-        }
-    }
-}*/
-/**@snippet [Handling the data received over BLE] */
-
-/**@brief Function for initializing services that will be used by the application.
- */
 
 static void nus_data_handler(ble_nus_evt_t * p_evt)
 {
@@ -228,6 +198,7 @@ static void nus_data_handler(ble_nus_evt_t * p_evt)
             }
 
             // Convert response to hex
+            // Convert response to hex
             uint8_t hex_response[2 * sizeof(response)];
             uint16_t hex_response_len = 0;
             for (uint16_t i = 0; i < response_len; i++)
@@ -237,6 +208,8 @@ static void nus_data_handler(ble_nus_evt_t * p_evt)
 
             NRF_LOG_INFO("Sending response: %s", hex_response);
             uint32_t err_code = ble_nus_data_send(&m_nus, hex_response, &hex_response_len, m_conn_handle);
+
+
             if (err_code != NRF_SUCCESS)
             {
                 NRF_LOG_ERROR("Failed to send data. Error: %d", err_code);
