@@ -18,7 +18,7 @@ set(HEAD_HASH)
 file(READ "/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/CMakeFiles/git-data/HEAD" HEAD_CONTENTS LIMIT 1024)
 
 string(STRIP "${HEAD_CONTENTS}" HEAD_CONTENTS)
-set(GIT_DIR "/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/.git")
+set(GIT_DIR "/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/.git")
 # handle git-worktree
 if(EXISTS "${GIT_DIR}/commondir")
 	file(READ "${GIT_DIR}/commondir" GIT_DIR_NEW LIMIT 1024)

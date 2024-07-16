@@ -529,12 +529,12 @@ void ble_client_uart_task(void *pvParameters)
                 if (event.size) {
                     uart_read_bytes(UART_NUM_0, command, event.size, portMAX_DELAY);
                     
-                    // Check if the command is valid (31 or 32 in hex)
-                    if (command[0] == '3' && (command[1] == '1' || command[1] == '2')) {
-                        ESP_LOGI(tag, "Sending command: %c%c", command[0], command[1]);
-                        send_data_to_server(command, 2);
+                    // Check if the command is valid (1 or 2)
+                    if (command[0] == '1' || command[0] == '2') {
+                        ESP_LOGI(tag, "Sending command: %c", command[0]);
+                        send_data_to_server(command, 1);
                     } else {
-                        ESP_LOGI(tag, "Invalid command. Please enter 31 or 32 in hex.");
+                        ESP_LOGI(tag, "Invalid command. Please enter 1 or 2.");
                     }
                 }
                 break;
