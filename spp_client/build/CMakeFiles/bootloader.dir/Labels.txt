@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/CMakeFiles/bootloader
+/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/CMakeFiles/bootloader.rule
+/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/CMakeFiles/bootloader-complete.rule
+/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

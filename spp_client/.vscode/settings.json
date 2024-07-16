@@ -1,0 +1,13 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.port": "/dev/tty.usbserial-14610",
+  "idf.adapterTargetName": "esp32s3",
+  "idf.openOcdConfigs": [
+    "board/esp32s3-builtin.cfg"
+  ],
+  "files.associations": {
+    "ble_svc_gap.h": "c",
+    "esp_http_server.h": "c"
+  },
+  "idf.flashType": "UART"
+}
