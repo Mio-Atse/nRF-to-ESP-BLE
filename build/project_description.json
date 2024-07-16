@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "spp_client",
-    "project_version":    "1",
+    "project_version":    "e4bedb7-dirty",
     "project_path":       "/Users/sametdonme/esp32/spp_client",
     "idf_path":           "/Users/sametdonme/esp/v5.2.2/esp-idf",
     "build_dir":          "/Users/sametdonme/esp32/spp_client/build",
@@ -805,7 +805,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [ "nimble_central_utils" ],
             "file": "/Users/sametdonme/esp32/spp_client/build/esp-idf/main/libmain.a",
-            "sources": [ "/Users/sametdonme/esp32/spp_client/main/main.c", "/Users/sametdonme/esp32/spp_client/main/main1.c" ],
+            "sources": [ "/Users/sametdonme/esp32/spp_client/main/main.c" ],
             "include_dirs": [ "." ]
         },
         "mbedtls": {
