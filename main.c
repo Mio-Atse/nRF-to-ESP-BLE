@@ -21,6 +21,9 @@
 #include "app_util_platform.h"
 #include "bsp_btn_ble.h"
 #include "nrf_pwr_mgmt.h"
+#include "nrf_timer.h"
+#include "nrf_delay.h"
+
 
 #if defined (UART_PRESENT)
 #include "nrf_uart.h"
@@ -113,6 +116,17 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t * p_file_name)
 
 /**@brief Function for initializing the timer module.
  */
+
+ static void timer_init(void)
+{
+    // Use TIMER4 (you can choose another available TIMER if TIMER4 is already in use)
+    NRF_TIMER4->MODE = TIMER_MODE_MODE_Timer;  // Set the timer in Timer Mode
+    NRF_TIMER4->BITMODE = TIMER_BITMODE_BITMODE_32Bit;  // 32-bit timer
+    NRF_TIMER4->PRESCALER = 0;  // Prescaler 0 means timer frequency = 16 MHz
+    NRF_TIMER4->TASKS_CLEAR = 1;  // Clear the timer
+    NRF_TIMER4->TASKS_START = 1;  // Start timer
+}
+
 static void timers_init(void)
 {
     ret_code_t err_code = app_timer_init();
@@ -199,15 +213,15 @@ static void nus_data_handler(ble_nus_evt_t * p_evt)
 
             // Convert response to hex
             // Convert response to hex
-            uint8_t hex_response[2 * sizeof(response)];
-            uint16_t hex_response_len = 0;
-            for (uint16_t i = 0; i < response_len; i++)
-            {
-                hex_response_len += snprintf((char*)&hex_response[hex_response_len], sizeof(hex_response) - hex_response_len, "%02X", response[i]);
-            }
+        uint8_t hex_response[2 * sizeof(response)];
+        uint16_t hex_response_len = 0;
+        for (uint16_t i = 0; i < response_len; i++)
+        {
+            hex_response_len += snprintf((char*)&hex_response[hex_response_len], sizeof(hex_response) - hex_response_len, "%02X", response[i]);
+        }
 
-            NRF_LOG_INFO("Sending response: %s", hex_response);
-            uint32_t err_code = ble_nus_data_send(&m_nus, hex_response, &hex_response_len, m_conn_handle);
+        NRF_LOG_INFO("Sending response: %s", hex_response);
+        uint32_t err_code = ble_nus_data_send(&m_nus, hex_response, &hex_response_len, m_conn_handle);
 
 
             if (err_code != NRF_SUCCESS)
@@ -731,19 +745,27 @@ static void send_data_to_client(uint8_t *data, uint16_t length)
 // In main(), after advertising_start():
 
 
+
 int main(void)
 {
-    srand(NRF_FICR->DEVICEID[0]);
+    // Initialize TIMER
+    timer_init();
+
+    // Wait a bit to let the TIMER counter increment
+    nrf_delay_ms(10);
+
+    // Use a combination of device ID and TIMER counter as seed
+    uint32_t seed = NRF_FICR->DEVICEID[0] ^ NRF_TIMER4->CC[0];
+    srand(seed);
 
     // Assign random values to sensor data
     sensor_data.temperature = (float)(rand() % 100);  // Random temperature between 0 and 99
     sensor_data.humidity = (float)(rand() % 100);     // Random humidity between 0 and 99
 
     // Assign random values to accelerometer data
-    accel_data.x = (int16_t)(rand() % 2001 - 1000);   // Random x between -1000 and 1000
-    accel_data.y = (int16_t)(rand() % 2001 - 1000);   // Random y between -1000 and 1000
-    accel_data.z = (int16_t)(rand() % 2001 - 1000);
-
+    accel_data.x = (int16_t)(rand() % 2066 - 1000);   // Random x between -1000 and 1000
+    accel_data.y = (int16_t)(rand() % 2066 - 1000);   // Random y between -1000 and 1000
+    accel_data.z = (int16_t)(rand() % 2066 - 1000);
 
     bool erase_bonds;
 
@@ -760,7 +782,6 @@ int main(void)
     advertising_init();
     conn_params_init();
     
-    //send_custom_message();
     // Start execution.
     printf("\r\nUART started.\r\n");
     NRF_LOG_INFO("Debug logging for UART over RTT started.");
@@ -769,12 +790,9 @@ int main(void)
     // Enter main loop.
     for (;;)
     {
-        
         idle_state_handle();
-        //send_custom_message();
     }
 }
-
 
 /**
  * @}

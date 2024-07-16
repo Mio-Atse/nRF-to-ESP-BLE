@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "spp_client",
-    "project_version":    "715994d-dirty",
+    "project_version":    "8d99938-dirty",
     "project_path":       "/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client",
     "idf_path":           "/Users/sametdonme/esp/v5.2.2/esp-idf",
     "build_dir":          "/Users/sametdonme/nrf_sdk/nRF5_SDK_17.1.0_ddde560/examples/myexp/esp_to_nrf_nus/spp_client/build",

@@ -106,6 +106,8 @@ Output/Debug/Obj/ble_app_uart_pca10100_s113/main.o: \
  ../../../../../../components/boards/pca10100.h \
  ../../../../../../components/libraries/button/app_button.h \
  ../../../../../../components/libraries/pwr_mgmt/nrf_pwr_mgmt.h \
+ ../../../../../../modules/nrfx/hal/nrf_timer.h \
+ ../../../../../../components/libraries/delay/nrf_delay.h \
  ../../../../../../modules/nrfx/hal/nrf_uart.h \
  ../../../../../../modules/nrfx/hal/nrf_uarte.h \
  ../../../../../../components/libraries/log/nrf_log.h \
