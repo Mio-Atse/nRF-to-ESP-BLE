@@ -1,4 +1,4 @@
-# Nordic UART Service Project for nRF52833 and ESP32
+# Nordic UART Service Project for BLE Communication between nRF52833 and ESP32
 
 ## Getting Started
 
